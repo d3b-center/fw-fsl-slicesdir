@@ -1,0 +1,50 @@
+{
+  "name": "fsl-slicesdir",
+  "label": "FSL slicesdir",
+  "description": "This tool overlays one image on another (output to PNG) using FSL's slicesdir command.",
+  "author": "Ariana Familiar",
+  "maintainer": "Ariana <familiara@chop.edu>",
+  "source": "",
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "custom": {
+    "gear-builder": {
+      "category": "analysis",
+      "image": "afam00/fsl-slicesdir:0.0.0"
+    },
+    "flywheel": {
+      "suite": "FSL"
+    }
+  },
+  "inputs": {
+    "base-image": {
+      "base": "file",
+      "description": "Base image (nifti).",
+      "type": {
+        "enum": [
+          "nifti"
+        ]
+      }
+    },
+    "overlay": {
+      "base": "file",
+      "description": "Image to overlay (nifti).",
+      "type": {
+        "enum": [
+          "nifti"
+        ]
+      }
+    }
+  },
+  "environment":{
+    "FSLDIR":"/usr/share/fsl/6.0",
+    "FSL_DIR":"${FSLDIR}",
+    "PWD":"/usr/share/fsl/6.0",
+    "FSLMULTIFILEQUIT":"TRUE",
+    "PATH":"/usr/share/fsl/6.0/bin/:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+    "POSSUMDIR":"/usr/share/fsl/6.0",
+    "FSLTCLSH":"/usr/bin/tclsh",
+    "FSLWISH":"/usr/bin/wish",
+    "FSLOUTPUTTYPE":"NIFTI_GZ"
+  }
+}

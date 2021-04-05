@@ -1,0 +1,61 @@
+#!/bin/bash
+#
+# Run file for Flywheel gear
+# Ariana Familiar, March 2021
+
+CONTAINER="[fsl-slicesdir]"
+echo -e "$CONTAINER  Initiated"
+
+###############################################################################
+## Built to flywheel-v0 spec.
+
+FLYWHEEL_BASE=/flywheel/v0
+OUTPUT_DIR=$FLYWHEEL_BASE/output
+over_DIR=$FLYWHEEL_BASE/input/overlay
+under_DIR=$FLYWHEEL_BASE/input/base-image
+MANIFEST=$FLYWHEEL_BASE/manifest.json
+
+###############################################################################
+## Configure the ENV
+
+export USER=Flywheel
+
+###############################################################################
+## Execute the main processes
+
+## Find the input files
+overlay_im=$(find $over_DIR/* -maxdepth 0 -type f -name "*.nii*")
+underlay_im=$(find $under_DIR/* -maxdepth 0 -type f -name "*.nii*")
+
+## If necessary input files are found, run the thing
+if [[ -f $overlay_im ]] && \
+   [[ -f $underlay_im ]] ; then
+
+  slicesdir -p ${overlay_im} ${underlay_im}
+
+  rm slicesdir/grot*
+  filename="${overlay_im##*/}"
+  over_fn=${filename%.nii*}
+  filename="${underlay_im##*/}"
+  under_fn=${filename%.nii*}
+  mv slicesdir/*.png output/${over_fn}_OVER_${under_fn}.png
+
+
+  ############ Finish up #################
+  STATUS=$?
+else
+  echo "$CONTAINER  Input files not found!"
+  exit 1
+fi
+
+# Check exit status
+if [[ $STATUS == 0 ]]
+  then
+    echo -e "$CONTAINER  Done!"
+
+  else
+    echo "$CONTAINER  command returned a non-zero exit code = [$STATUS]."
+    exit 1
+fi
+
+exit 0
