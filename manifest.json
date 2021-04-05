@@ -4,7 +4,7 @@
   "description": "This tool overlays one image on another (output to PNG) using FSL's slicesdir command.",
   "author": "Ariana Familiar",
   "maintainer": "Ariana <familiara@chop.edu>",
-  "source": "",
+  "source": "https://github.com/d3b-center/fw-fsl-slicesdir",
   "version": "0.0.0",
   "license": "Apache-2.0",
   "custom": {
@@ -36,6 +36,7 @@
       }
     }
   },
+  "config": {},
   "environment":{
     "FSLDIR":"/usr/share/fsl/6.0",
     "FSL_DIR":"${FSLDIR}",
