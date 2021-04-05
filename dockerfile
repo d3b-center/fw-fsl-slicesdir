@@ -9,6 +9,13 @@
 FROM flywheel/fsl-base:6.0.1
 MAINTAINER Ariana Familiar <familiara@chop.edu>
 
+
+#############################################
+# Install necessary packages
+RUN apt-get update \
+    && apt-get install -y \
+      jq
+
 #############################################
 # Setup default flywheel/v0 directory
 ENV FLYWHEEL=/flywheel/v0

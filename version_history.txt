@@ -1,0 +1,6 @@
+0.0.0
+    Initialized, tested locally, & uploaded to Flywheel
+
+0.0.1
+    added option to specify output PNG file name
+    added exception to not create output if no PNG found

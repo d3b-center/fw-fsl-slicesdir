@@ -5,12 +5,12 @@
   "author": "Ariana Familiar",
   "maintainer": "Ariana <familiara@chop.edu>",
   "source": "https://github.com/d3b-center/fw-fsl-slicesdir",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "Apache-2.0",
   "custom": {
     "gear-builder": {
       "category": "analysis",
-      "image": "afam00/fsl-slicesdir:0.0.0"
+      "image": "chop.flywheel.io/fsl-slicesdir:0.0.1"
     },
     "flywheel": {
       "suite": "FSL"
@@ -36,7 +36,13 @@
       }
     }
   },
-  "config": {},
+  "config": {
+    "output_name": {
+      "default": "base_OVER_overlay",
+      "description": "Label for PNG output file.",
+      "type": "string"
+    }
+  },
   "environment":{
     "FSLDIR":"/usr/share/fsl/6.0",
     "FSL_DIR":"${FSLDIR}",

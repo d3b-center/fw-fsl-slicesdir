@@ -14,6 +14,7 @@ OUTPUT_DIR=$FLYWHEEL_BASE/output
 over_DIR=$FLYWHEEL_BASE/input/overlay
 under_DIR=$FLYWHEEL_BASE/input/base-image
 MANIFEST=$FLYWHEEL_BASE/manifest.json
+CONFIG_FILE=$FLYWHEEL_BASE/config.json
 
 ###############################################################################
 ## Configure the ENV
@@ -22,6 +23,14 @@ export USER=Flywheel
 
 ###############################################################################
 ## Execute the main processes
+
+## Parse config options from CONFIG file or MANIFEST
+if [[ -f $CONFIG_FILE ]]; then
+  echo "$CONTAINER  $CONFIG_FILE found. Loading config..."
+  output_name=$(jq -r <$CONFIG_FILE '''.config.output_name')
+else
+  output_name=$(jq -r <$MANIFEST '''.config.output_name.default')
+fi
 
 ## Find the input files
 overlay_im=$(find $over_DIR/* -maxdepth 0 -type f -name "*.nii*")
@@ -33,13 +42,18 @@ if [[ -f $overlay_im ]] && \
 
   slicesdir -p ${overlay_im} ${underlay_im}
 
-  rm slicesdir/grot*
-  filename="${overlay_im##*/}"
-  over_fn=${filename%.nii*}
-  filename="${underlay_im##*/}"
-  under_fn=${filename%.nii*}
-  mv slicesdir/*.png output/${over_fn}_OVER_${under_fn}.png
-
+  if [[ -f slicesdir/index.html ]] ; then
+    rm slicesdir/grot*
+    if [[ ${output_name} == "base_OVER_overlay" ]] ; then
+      filename="${overlay_im##*/}"
+      over_fn=${filename%.nii*}
+      filename="${underlay_im##*/}"
+      under_fn=${filename%.nii*}
+      mv slicesdir/*.png output/${over_fn}_OVER_${under_fn}.png
+    else
+      mv slicesdir/*.png output/${output_name}.png
+    fi
+  fi
 
   ############ Finish up #################
   STATUS=$?
